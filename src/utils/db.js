@@ -3,6 +3,7 @@ const {db} = require('../config');
 
 
 const url = db.uri;
+console.log('db url', url);
 var _db = {};
 
 module.exports = {
