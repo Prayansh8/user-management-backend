@@ -6,7 +6,7 @@ const config = require('../config');
 async function signIn(req, res) {
     const email = req.body.email;
     const password = req.body.password;
-    
+
     var ere = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     if (!ere.test(email)) {
         return res.status(400).send({ detail: 'please fill email formate' });
@@ -25,8 +25,16 @@ async function signIn(req, res) {
     if (!validPassword) {
         return res.status(400).send({ detail: 'Invalid credentials' });
     }
-    const token = jwt.sign(user, config.jwt.jwtSecretKey)
-    return res.send({ detail: 'Login success', token: token });
+
+    var userData = {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        gender: user.gender,
+        email: user.email,
+    }
+    const token = jwt.sign(userData, config.jwt.jwtSecretKey);
+    return res.send({ detail: 'Login success', token: token, userData: userData });
 
 }
 
@@ -37,14 +45,14 @@ async function signUp(req, res) {
     var first_name = req.body.first_name;
     var last_name = req.body.last_name;
 
-    if(first_name === ""){
+    if (first_name === "") {
         return res.status(400).send({ detail: 'first_name are required' });
     }
 
-    if(last_name === ""){
+    if (last_name === "") {
         return res.status(400).send({ detail: 'last_name are required' });
     }
-    
+
     var ere = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     if (!ere.test(email)) {
         return res.status(400).send({ detail: 'Please fill the email in email format' });
@@ -55,9 +63,9 @@ async function signUp(req, res) {
         return res.status(400).send({ detail: 'password should Minimum 6 and maximum 32 characters, at least one uppercase letter, one lowercase letter, one number and one special character: are required' });
     }
 
-    const existingUser = await db.user.findOne({email: email});
+    const existingUser = await db.user.findOne({ email: email });
 
-    if(existingUser){
+    if (existingUser) {
         return res.status(400).send({ detail: 'User email exist' });
     }
 
@@ -77,5 +85,5 @@ async function signUp(req, res) {
 
 module.exports = {
     signIn,
-    signUp
+    signUp,
 }
