@@ -18,7 +18,6 @@ var userSchema = new Schema({
   },
   gender: {
     type: String,
-    
   },
   img: {
     type: String
@@ -26,7 +25,8 @@ var userSchema = new Schema({
   password: {
     type: String,
   },
-});
+},
+  { versionKey: false });
 
 const usermodel = mongoose.model("User", userSchema);
 module.exports = { usermodel }
