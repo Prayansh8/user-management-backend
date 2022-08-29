@@ -26,7 +26,7 @@ async function signIn(req, res) {
         return res.status(400).send({ detail: 'Invalid credentials' });
     }
 
-    var userData = {
+    const userData = {
         id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
