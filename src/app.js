@@ -2,6 +2,7 @@ const express = require('express');
 const { connectToServer } = require('./utils/db');
 const { signIn, signUp } = require('./controlears/auth');
 const { getUsers, getUser, updateUser, deleteUser } = require('./controlears/users');
+const { createPost, getPosts, getPost, updatePost, deletePost } = require('./controlears/post')
 const { checkToken } = require('./middlewares');
 const app = express();
 const { port, baseUrI } = require('./config');
@@ -29,5 +30,11 @@ app.get("/api/users", checkToken, getUsers);
 app.get("/api/users/:id", checkToken, getUser);
 app.patch("/api/users/:id", checkToken, updateUser);
 app.delete("/api/users/:id", checkToken, deleteUser);
+
+app.post("/api/posts", checkToken , createPost);
+app.get("/api/posts", checkToken , getPosts);
+app.get("/api/posts/:id", checkToken , getPost);
+app.patch("/api/posts/:id", checkToken , updatePost);
+app.delete("/api/posts/:id", checkToken , deletePost);
 
 app.listen(port, () => console.log(`Example app listening on port ${baseUrI}:${port}`));

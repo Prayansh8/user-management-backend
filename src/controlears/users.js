@@ -21,8 +21,9 @@ const getUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const userId = req.params.id;
-    if(req.user.id != userId){
-        return res.status(401).send({"detail": "unauthorized"});
+    console.log(req.user.id, userId)
+    if (req.user.id != userId) {
+        return res.status(401).send({ "detail": "unauthorized" });
     }
     const updatedUser = req.body;
     let user = null;
@@ -40,17 +41,18 @@ const updateUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
+
     const userId = req.params.id;
-    if(req.user.id != userId){
-        return res.status(401).send({"detail": "unauthorized"});
+    if (req.user.id != userId) {
+        return res.status(401).send({ "detail": "unauthorized" });
     }
     user = await db.user.findByIdAndDelete(userId);
-    return res.send("user deleted")
+    return res.send({ "detail": "User Deleted" });
 }
 
 module.exports = {
     getUsers,
     getUser,
     updateUser,
-    deleteUser
+    deleteUser,
 }
